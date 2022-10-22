@@ -1,0 +1,46 @@
+#---------------------------------------------------
+# Dual Axis Solar Tracking/Multiplanet
+# v2.3
+# Set to any solar array for auto tracking
+#---------------------------------------------------
+alias Panel d0 #solar panel (just one, any type)
+alias Sensor d1 #Light sensor
+alias Dial d2 #Dial
+alias vAngle r0 #vertical angle
+alias hAngle r1 #horizontal angle
+alias cAngle r2 #correction angle
+alias isNight r3 #Night time check
+alias world r4 #Dial setting
+l r5 d0 PrefabHash #get solar panel hash
+define SensorAngle 0 #direction from sensor
+define PanelAngle 270 #direction of power port
+sub r2 SensorAngle PanelAngle
+sub r2 r2 90
+
+wCheck: #Dial setting for world
+l r4 d2 Setting
+beq r4 0 Wait
+beq r4 1 Moon
+beq r4 2 Mars
+
+Wait: #Also night mode
+yield
+l r3 d1 Activate
+l r4 d2 Setting
+bnez r3 wCheck
+sb r5 Vertical 50
+sb r5 Horizontal 90
+bnez r4 Wait
+
+Moon:
+sleep 1
+l r0 d1 Vertical
+sub r0 90 r0
+l r1 d1 Horizontal
+add r1 r1 r2
+sb r5 Vertical r0
+sb r5 Horizontal r1
+j wCheck
+
+Mars:
+j wCheck
