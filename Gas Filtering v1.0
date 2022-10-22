@@ -1,0 +1,37 @@
+#---------------------------------------------------
+# Gas Filtering
+# v1.0
+# Allows gas to filter after meeting criteria
+#---------------------------------------------------
+
+alias Analyzer d0
+alias Valve d1 #valve to turn on/off
+alias Filters d2
+alias hNumber r0 #Filter hash number
+alias actualTemp r1 
+alias actualPress r2
+l r0 d2 PrefabHash
+
+Loop:
+yield
+l r1 d0 Temperature
+l r2 d0 Pressure
+bge r1 308.15 Off #Kelvin
+ble r2 10000 Off #Kpa
+ble r1 273.15 Pump #Kelvin
+bge r2 40000 Pump #Kpa
+j Loop
+
+Pump:
+s d1 Setting 100
+s d1 On 1
+sb r0 On 1
+yield
+j Loop
+
+Off:
+s d1 Setting 0
+s d1 On 0
+sb r0 On 0
+yield
+j Loop
