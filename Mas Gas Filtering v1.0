@@ -1,12 +1,12 @@
 #---------------------------------------------------
-# Gas Filtering
+# Mas Gas Filtering
 # v1.0
 # Allows gas to filter after meeting criteria
 #---------------------------------------------------
 
 alias Analyzer d0
 alias Valve d1 #valve to turn on/off
-alias Filters d2
+alias Filters d2 #Chose only one
 alias hNumber r0 #Filter hash number
 alias actualTemp r1 
 alias actualPress r2
@@ -16,20 +16,20 @@ Loop:
 yield
 l r1 d0 Temperature
 l r2 d0 Pressure
-bge r1 308.15 Off #Kelvin
-ble r2 10000 Off #Kpa
-ble r1 273.15 Pump #Kelvin
-bge r2 40000 Pump #Kpa
+bge r1 308.15 Off #Kelvin (35c / 95f)
+ble r2 10000 Off #Kpa (adjust to any number)
+ble r1 273.15 Pump #Kelvin (0c / 32f)
+bge r2 40000 Pump #Kpa (adjust to any number)
 j Loop
 
-Pump:
+Pump: #Turn pump/vale on
 s d1 Setting 100
 s d1 On 1
 sb r0 On 1
 yield
 j Loop
 
-Off:
+Off: #Turn pump/valve off
 s d1 Setting 0
 s d1 On 0
 sb r0 On 0
