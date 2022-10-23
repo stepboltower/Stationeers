@@ -1,0 +1,31 @@
+#---------------------------------------------------
+# Automates arc furnace
+# v 1.1
+# No displays or counters are programmed into this
+#---------------------------------------------------
+
+alias aFurnace d0 #Furnace
+alias iCount r0 #Import Count
+alias eCount r1 #Export Count
+alias fOn r2 #Furnace On
+alias fSlotInput r3 #Furnace Slot Input
+alias fSlotOutput r4 #Furnace Slot Output
+alias fAction r5 #Furnace Activation
+
+Loop:
+l iCount aFurnace ImportCount #loads input slot
+l eCount aFurnace ExportCount #loads output slot
+sgt fOn iCount eCount #r1 if a > b, otherwise 0
+s aFurnace On r2 #turn on based on line 18
+#goto line if a == 0, store next line number in ra
+beqzal fOn 28 #j to line 24
+yield
+ls fSlotInput aFurnace 0 Occupied
+ls fSlotOutput aFurnace 1 Occupied
+sub fAction fSlotInput fSlotOutput
+s aFurnace Activate fAction
+yield
+j Loop
+
+s aFurnace ClearMemory 1
+j ra
