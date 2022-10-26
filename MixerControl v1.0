@@ -5,16 +5,16 @@
 alias ANALYZERGAS1 d0
 alias ANALYZERGAS2 d1
 alias GASMIXER d2
-alias MEMORYDESIRED d3
-alias MEMORYCALCULATED d4
-alias LEVER d5
+alias LEVER d3
+alias MEMORYDESIRED d4
+alias MEMORYCALCULATED d5
 alias GAS1TEMPERATURE r0 # T1 in formula, Kelvin
 alias GAS2TEMPERATURE r1 # T2 in formula, Kelvin
 alias RATIODESIRED r2    # X in formula, 0..1
 alias RATIOCALCULATED r3 # Y in formula, 0..1
-alias LEVERSTATE r4
 alias TMP1 r5
 alias TMP2 r6
+alias LEVERSTATE r4
 
 ##
 waitlever:
