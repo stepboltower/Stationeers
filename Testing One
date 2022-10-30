@@ -1,0 +1,23 @@
+#Original
+start:
+yield
+l r0 suit RatioOxygen
+brlt r0 0.95 2
+s suit Filtration 0
+brgt r0 0.4 2
+s suit Filtration 1
+j start
+
+New
+start:
+yield
+bdns suit start
+l r0 suit RatioOxygen
+  bap r0 0.6164 0.3511 start
+  slt r0 r0 0.6164
+s suit Filtration r0
+j start
+  
+  #geometric center of a positive range is sqrt(low×high), geometric ratio of a positive range
+  #is 1-(center/high), bap wants the geometric center and ratio of the range you're checking,
+  #it's a one-ilne two-test gadget.
