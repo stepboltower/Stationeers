@@ -1,0 +1,40 @@
+#--------------------------------------------------
+# Atmosphere Temperature (X-Gas)
+# v1.1
+# Controlling atmosphere using X-gas
+#--------------------------------------------------
+
+alias Sensor d0 #Pipe analyzer
+alias Press d1 #Pressure regulator
+alias aTemp r0
+alias hOne r1 #Hash number of device d0
+alias hTwo r2 #Hash number of device d1
+alias hiTemp r3
+alias loTemp r4
+define r5 295.15 #Kelvin (22c / 71.6f)
+define r6 291.15 #Kelvin (18c / 64.4f)
+#Specific Hash check
+l r1 d0 PrefabHash
+l r2 d1 PrefabHash
+bne r1 435685051 16
+bne r1 1149857558 17
+
+Run:
+j 37 #Rechecking hash numbers
+l r0 d0 Temperature
+sgt r3 r0 r5 #r3 = 1 if r0>r5
+slt r4 r0 r6 #r4 = 1 if r0<r6
+beq r3 1 25
+beq r4 1 28
+s d1 On 0
+j Run
+
+sne r0 r5 27
+j Run
+s d1 On 1
+j Run
+
+#Rechecking hash numbers
+bne r1 435685051 16
+bne r2 1149857558 17
+j Run
