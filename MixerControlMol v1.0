@@ -1,0 +1,57 @@
+#---------------------------------------------------
+# Mixer Control (Moles)
+# v1.0
+# Controlling two-gas(atmosphere) ratio w/ mixer
+#   using moles
+#---------------------------------------------------
+
+alias gAnalyzer1 d0 #Analyzer for gas 1
+alias gAnalyzer2 d1 #Analyzer for gas 2
+alias Mixer d2
+alias Valve d3 #Pump Valve
+alias mRatio d4 #Use memory, input ratio needed
+alias mCalc d5 #Use memory
+alias gTemp1 r0
+alias gTemp2 r1
+alias rNeed r2
+alias rCalc r3
+alias cPres r4
+alias Tmp1 r5
+alias Tmp2 r6
+
+eCheck: #Equipment check
+bdns d0 22
+bdns d1 22
+bdns d2 22
+bdns d3 22
+bdns d4 22
+bdns d5 22
+
+cPump: #Check pump state
+l r4 d3 On
+beq r4 0 Start
+j cPump
+
+Start: #All checks clear, so go
+l r0 d0 Temperature
+l r1 d1 Temperature
+l r2 d4 Setting
+mul r5 r0 r2 #Start calculations
+sub r6 1 r2
+mul r6 r1 r6
+add r6 r5 r6
+div r3 r5 r6
+s d5 Setting r3 #Finish calculations
+mul r3 100 r3
+s d2 Setting r3 #Adjust mixer
+s d2 On 1
+sleep 2
+s d2 On 0
+s d3 On 1
+sleep 1
+s d3 On 0
+j cPump
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Term
